@@ -5,12 +5,22 @@ import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
 import { fetchProductData } from "../Redux/Slice/ProductSlice";
 import Spinner from "react-bootstrap/Spinner";
+import { addToWishlist } from "../Redux/Slice/WishListSlice";
 function Home() {
   const dispatch = useDispatch();
   const { loading, error, products } = useSelector(
     (state) => state.ProductSlice
-  ); 
-  console.log(products);
+  );
+  const { wishlist } = useSelector((state) => state.WishListSlice);
+
+  const handleAddToWishlist = (product) => {
+    const existingProduct = wishlist.find((item) => item.id == product.id);
+    if (existingProduct) {
+      alert("Product Already added to Wishlist ");
+    } else {
+      dispatch(addToWishlist(product)); // Add a specific product
+    }
+  };
 
   useEffect(() => {
     dispatch(fetchProductData());
@@ -30,22 +40,19 @@ function Home() {
                 <Card style={{ width: "18rem" }}>
                   <Card.Body>
                     <Card.Title>{product?.title.slice(0, 20)}</Card.Title>
-                    <Link to={`./view/${product?.id}`}  >
-                      <Card.Img
-                         
-                        variant="top"
-                        src={product?.thumbnail}
-                      />
+                    <Link to={`./view/${product?.id}`}>
+                      <Card.Img variant="top" src={product?.thumbnail} />
                     </Link>
-                    <Card.Text>
-                     {product?.description}
-                    </Card.Text>
+                    <Card.Text>{product?.description}</Card.Text>
                     <div className="d-flex justify-content-between">
                       <Button className="btn btn-primary ">
-                        <i class="fa-solid fa-cart-shopping mx-2"></i>{" "}
+                        <i className="fa-solid fa-cart-shopping mx-2"></i>
                       </Button>
-                      <Button className="btn btn-danger ">
-                        <i class="fa-solid fa-heart mx-2"></i>{" "}
+                      <Button
+                        className="btn btn-danger "
+                        onClick={() => handleAddToWishlist(product)}
+                      >
+                        <i className="fa-solid fa-heart mx-2"></i>
                       </Button>
                     </div>
                   </Card.Body>

@@ -1,15 +1,25 @@
-import React from "react";
-
-import { Container, Badge, Button, Navbar, Nav, Form } from "react-bootstrap";
-
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Container, Badge , Navbar, Nav  } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom"; 
+ 
 function Header() {
+  const [wishlistCount,setWishListCount]=useState(0);
+  const wishlist = useSelector((state) => state.WishListSlice.wishlist);
+  useEffect(()=>{
+    setWishListCount(wishlist?.length)
+  },[wishlist])
+  
   return (
     <div>
       <Navbar expand="lg" className="bg-body-tertiary">
         <Container fluid>
           <Navbar.Brand className="mx-5 fw-bold">
-            <i class="fa-solid fa-truck-fast fa-bounce mx-3"></i>E-Cart
+            <Link  to={"/"}
+                  style={{ textDecoration: "none" }}
+                  ><i className="fa-solid fa-truck-fast fa-bounce mx-3"></i>E-Cart
+            </Link>
+            
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll">
@@ -24,9 +34,9 @@ function Header() {
                   style={{ textDecoration: "none" }}
                   className="text-danger"
                 >
-                  <i class="fa-solid fa-heart mx-2 text-danger"></i>Wishlist
+                  <i className="fa-solid fa-heart mx-2 text-danger"></i>Wishlist
                 </Link>
-                <Badge bg="success rounded ms-2">0</Badge>
+                <Badge bg="success rounded ms-2">{wishlistCount}</Badge>
               </Nav.Link>
 
               <Nav.Link className="fw-bold btn-outline-dark">
@@ -35,7 +45,7 @@ function Header() {
                   style={{ textDecoration: "none" }}
                   className="text-primary"
                 >
-                  <i class="fa-solid fa-cart-shopping mx-2 text-primary"></i>{" "}
+                  <i className="fa-solid fa-cart-shopping mx-2 text-primary"></i>{" "}
                   Cart
                 </Link>
                 <Badge bg="success rounded ms-2">0</Badge>
