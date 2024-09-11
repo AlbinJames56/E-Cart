@@ -23,7 +23,8 @@ function View() {
       dispatch(addToWishlist(product)); // Add a specific product
     }
   };
-
+  // add to cart
+  const cart = useSelector((state) => state.CartSlice);
   return (
     <div className="m-5">
       <div className="container row mt-5 p-5 bg-secondary rounded">
@@ -39,17 +40,18 @@ function View() {
           </h5>
           <p>{product?.description}</p>
           <div className="d-flex justify-content-between mt-4">
-            <Button className="btn btn-outline-dark p-2">
+            <Button
+              className="btn btn-outline-dark p-2"
+              onClick={() => handleAddToWishlist(product)}
+            >
               <i className="fa-solid fa-heart text-danger">
-                <span
-                  className="ms-2 text-white"
-                  onClick={() => handleAddToWishlist(product)}
-                >
-                  Add to Wishlist
-                </span>
+                <span className="ms-2 text-white">Add to Wishlist</span>
               </i>
             </Button>
-            <Button className="btn btn-outline-light pt-2">
+            <Button
+              className="btn btn-outline-light pt-2"
+              onClick={() => dispatch(addToCart(product))}
+            >
               <i className="fa-solid fa-cart-shopping text-primary">
                 <span className="ms-2 text-white">Add to Cart</span>
               </i>

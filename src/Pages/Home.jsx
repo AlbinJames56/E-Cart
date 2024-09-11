@@ -6,13 +6,15 @@ import { Link } from "react-router-dom";
 import { fetchProductData } from "../Redux/Slice/ProductSlice";
 import Spinner from "react-bootstrap/Spinner";
 import { addToWishlist } from "../Redux/Slice/WishListSlice";
+import { addToCart } from "../Redux/Slice/CartSlice";
 function Home() {
   const dispatch = useDispatch();
+  // display products
   const { loading, error, products } = useSelector(
     (state) => state.ProductSlice
   );
+  // wishlist
   const { wishlist } = useSelector((state) => state.WishListSlice);
-
   const handleAddToWishlist = (product) => {
     const existingProduct = wishlist.find((item) => item.id == product.id);
     if (existingProduct) {
@@ -21,10 +23,18 @@ function Home() {
       dispatch(addToWishlist(product)); // Add a specific product
     }
   };
-
+  // cart
+  const cart = useSelector((state) => state.CartSlice);
+  const handleAddToCart=(product) =>{
+    
+      dispatch(addToCart(product))
+ 
+    
+  }
   useEffect(() => {
     dispatch(fetchProductData());
   }, []);
+  
   return (
     <div className="container mt-5">
       {loading ? (
@@ -45,7 +55,10 @@ function Home() {
                     </Link>
                     <Card.Text>{product?.description}</Card.Text>
                     <div className="d-flex justify-content-between">
-                      <Button className="btn btn-primary ">
+                      <Button
+                        className="btn btn-primary "
+                        onClick={() =>handleAddToCart(product) }
+                      >
                         <i className="fa-solid fa-cart-shopping mx-2"></i>
                       </Button>
                       <Button

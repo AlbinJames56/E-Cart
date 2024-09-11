@@ -3,14 +3,19 @@ import { Row, Col, Card, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { removeFromList } from "../Redux/Slice/WishListSlice";
-// import { removeFromList } from "../Redux/Slice/WishListSlice";
+import { addToCart } from "../Redux/Slice/CartSlice";
+ 
 
-function Wishlist() { 
+function Wishlist() {
   const wishlist = useSelector((state) => state.WishListSlice.wishlist);
-   const dispatch=useDispatch();
-  const handleRemove=(productId)=>{
-    dispatch(removeFromList(productId))
-    alert("Item Removed From Wishlist")
+  const dispatch = useDispatch();
+  const handleRemove = (productId) => {
+    dispatch(removeFromList(productId));
+    alert("Item Removed From Wishlist");
+  };
+  const handleAddToCart=(product) =>{
+      dispatch(addToCart(product))
+      dispatch(removeFromList(product.id));
   }
   return (
     <div className="container mt-5">
@@ -26,12 +31,12 @@ function Wishlist() {
                   </Link>
                   <Card.Text>{product?.description}</Card.Text>
                   <div className="d-flex justify-content-between">
-                    <Button className="btn btn-primary ">
-                      <i class="fa-solid fa-cart-shopping mx-2"></i>{" "}
+                    <Button className="btn btn-primary " onClick={() =>handleAddToCart(product) }>
+                      <i class="fa-solid fa-cart-shopping mx-2"></i>
                     </Button>
                     <Button
                       className="btn btn-danger "
-                      onClick={()=>handleRemove(product.id)}
+                      onClick={() => handleRemove(product.id)}
                     >
                       <i class="fa-solid fa-heart-circle-minus mx-2"></i>
                     </Button>
@@ -44,12 +49,11 @@ function Wishlist() {
           <div className="container mt-5 d-flex justify-content-center align-items-center">
             <div>
               <h1 className="text-light text-center">Your Wishlist is Empty</h1>
-            <img
-              src="https://bakestudio.in/assets/images/cart/empty-cart.gif"
-              alt=""
-            />
+              <img
+                src="https://bakestudio.in/assets/images/cart/empty-cart.gif"
+                alt=""
+              />
             </div>
-            
           </div>
         )}
       </Row>

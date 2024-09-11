@@ -4,11 +4,19 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom"; 
  
 function Header() {
+  // wishlist count
   const [wishlistCount,setWishListCount]=useState(0);
   const wishlist = useSelector((state) => state.WishListSlice.wishlist);
+
+  // cart count
+  const [cartCount,setCartCount]=useState(0);
+  const cart=useSelector((state)=>state.CartSlice);
+ 
+  
   useEffect(()=>{
     setWishListCount(wishlist?.length)
-  },[wishlist])
+    setCartCount(cart?.length)
+  },[wishlist,cart])
   
   return (
     <div>
@@ -48,7 +56,7 @@ function Header() {
                   <i className="fa-solid fa-cart-shopping mx-2 text-primary"></i>{" "}
                   Cart
                 </Link>
-                <Badge bg="success rounded ms-2">0</Badge>
+                <Badge bg="success rounded ms-2">{cartCount}</Badge>
               </Nav.Link>
             </Nav>
             {/* <Form className="d-flex">
